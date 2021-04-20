@@ -1,18 +1,48 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  </div>
+    <div class="" v-if="auth">
+        <h1 class="text-2xl font-light">Welcome to the home page, {{ name }}</h1>
+    </div>
+    <div class="" v-if="!auth">
+        <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import {onMounted, ref} from 'vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
-export default defineComponent({
-  name: 'Home',
-  components: {
-    HelloWorld,
-  },
-});
+export default {
+    name: "Home",
+    setup() {
+        const store = useStore();
+        const auth = computed(() => store.state.authenticated);
+        const name = ref();
+
+        onMounted(async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/user', {
+                method: "GET",
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
+                });
+
+                const content = await response.json();
+
+                // check if the user is loggedin (Maybe make this a function because we use it alot)
+                if(response.status == 200) {
+                    name.value = content.name
+                    await store.dispatch(('setAuth'), true)
+                }
+            } catch(e) {
+                await store.dispatch(('setAuth'), false)
+            }
+        })
+
+        return {
+            name,
+            auth
+        }
+    }
+}
 </script>
