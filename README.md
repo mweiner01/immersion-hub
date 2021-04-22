@@ -8,6 +8,6 @@ For example, you have a problem keeping focused, Immersion Hub offers you a Stop
 
 ## When will be Immersion Hub released?
 
-[Me](https://github.com/mweiner01) and [Vojjtar](https://github.com/vojjtar) are working on this project. It takes a while, please keep patient! :)
+[Vojjtar](https://github.com/vojjtar) and [I](https://github.com/mweiner01) are working on this project. It takes a while, please keep patient! :)
 
 But: This could change at some time, that I will get someone else in my team who will help to develop the web application
