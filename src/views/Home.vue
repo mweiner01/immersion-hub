@@ -1,47 +1,48 @@
 <template>
     <div class="" v-if="auth">
-        <h1 class="text-2xl font-light">Welcome to the home page, {{ name }}</h1>
+        <div v-if="userinfo">
+            <h1 class="text-2xl font-light">Welcome to the home page, <strong>{{ userinfo.name }}</strong> and your coins are: <strong>{{ userinfo.coins }}</strong></h1>
+        </div>
     </div>
     <div class="" v-if="!auth">
         <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
     </div>
 </template>
 
-<script lang="ts">
-import {onMounted, ref} from 'vue';
-import { useStore } from 'vuex';
+<script>
 import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
     name: "Home",
-    setup() {
-        const store = useStore();
-        const auth = computed(() => store.state.authenticated);
-        const name = ref();
-
-        onMounted(async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/user', {
-                method: "GET",
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include'
-                });
-
-                const content = await response.json();
-
-                // check if the user is loggedin (Maybe make this a function because we use it alot)
-                if(response.status == 200) {
-                    name.value = content.name
-                    await store.dispatch(('setAuth'), true)
-                }
-            } catch(e) {
-                await store.dispatch(('setAuth'), false)
-            }
-        })
-
+    data() {
         return {
-            name,
-            auth
+            userinfo: null,
+            auth: false
+        }
+    },
+    mounted: function() {
+        this.checkUser();
+    },
+    methods: {
+        checkUser: async function() {
+                const store = useStore();
+                this.auth = computed(() => store.state.authenticated);
+                try {
+                    const response = await fetch('http://localhost:8000/api/user', {
+                    method: "GET",
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include'
+                    }).then(response => response.json()).then(data => this.userinfo = data);
+                    
+
+                    // check if the user is loggedin (Maybe make this a function because we use it alot)
+                    if(response.status == 200) {
+                        await store.dispatch(('setAuth'), true)
+                    }
+                } catch(e) {
+                    await store.dispatch(('setAuth'), false)
+                }
         }
     }
 }

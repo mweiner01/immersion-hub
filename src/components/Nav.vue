@@ -1,9 +1,9 @@
 <template>
 <div class="shadow-xl py-2">
 <nav class="flex flex-wrap max-w-6xl mx-auto items-center justify-between px-6 lg:px-16">
-    <div class="flex flex-shrink-0 text-white">
-        <a class="#" href="/">
-                <img src="images/logo.png" alt="" class="w-auto h-12" />
+    <div class="flex flex-shrink-0 text-gray-800">
+        <a class="py-1 px-4" href="/">
+            <h1>Immersion Hub</h1>
         </a>
     </div>
     <!-- Menu Button (Mobile) -->
@@ -17,12 +17,12 @@
             <router-link to="/" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded">Home</router-link>
         </ul>
         </div>
-            <div class="flex flex-shrink-0 text-gray-800" v-if="!auth">
-                <router-link to="/login" class="py-1 px-4 rounded-md bg-gray-200 hover:bg-gray-300 mx-2">Login</router-link>
-                <router-link to="register" class="py-1 px-4 rounded-md bg-gray-200 hover:bg-gray-300 mx-2">Register</router-link>
+            <div class="flex flex-shrink-0 text-white" v-if="!auth">
+                <router-link to="/login" class="py-1 px-4 rounded bg-green-400 hover:bg-green-500 mx-2">Login</router-link>
+                <router-link to="register" class="py-1 px-4 rounded bg-green-400 hover:bg-green-500 mx-2">Register</router-link>
             </div>
             <div class="flex flex-shrink-0 text-white" v-if="auth">
-                <router-link to="/login" class="font-semibold text-yellow-500 border-2 border-yellow-500 rounded-md py-2 px-4 hover:bg-yellow-500 hover:text-white mx-2" @click="logout">Logout</router-link>
+                <router-link to="/login" class="py-1 px-4 rounded bg-red-400 hover:bg-red-500 mx-2" @click="logout">Logout</router-link>
             </div>
     </nav>
 </div>
@@ -31,7 +31,7 @@
 <script lang="ts">
 import { computed } from 'vue';
 import { useStore } from 'vuex'
-import {onMounted, ref} from 'vue';
+import { onMounted } from 'vue';
 export default {
     name: "Nav", 
     setup() {
