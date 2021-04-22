@@ -30,14 +30,19 @@ export default {
       const router = useRouter()
 
       const submit = async() => {
-        await fetch('http://localhost:8000/api/register', {
+        const response = await fetch('http://localhost:8000/api/register', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(data)
         });
 
-        // send user to login page
-        await router.push('/login')
+        const responseData = await response.json();
+
+        if(!response.ok) {
+          alert("The Username or Email is not available")
+        } else {
+          await router.push('/login')
+        }
       }
 
 
