@@ -1,24 +1,5 @@
 # immersion-hub
 
-## Project setup
-```
-npm install
-```
+## What is Immersion Hub?
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Immersion Hub is an web applicaton for people who'd like to learn any language and keep track of it with different and cool features.
