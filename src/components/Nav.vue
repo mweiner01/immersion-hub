@@ -48,8 +48,9 @@ export default {
                 });
 
                 const content = await response.json();
-
-                if(response.status == 200) {
+                
+                // If the response is ok we set authentication to true
+                if(response.ok) {
                     await store.dispatch(('setAuth'), true)
                 }
             } catch(e) {
