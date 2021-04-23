@@ -12,7 +12,7 @@
         <p>Menu</p>
         </button>
     </div>
-    <div class="inline-block lg:block ml-auto mr-6">
+    <div class="inline-block lg:block ml-auto mr-2">
         <ul class="flex flex-row float-right">
             <router-link to="/" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded">Home</router-link>
         </ul>
@@ -22,6 +22,7 @@
                 <router-link to="register" class="py-1 px-4 rounded bg-green-400 hover:bg-green-500 mx-2">Register</router-link>
             </div>
             <div class="flex flex-shrink-0 text-white" v-if="auth">
+                <router-link to="/profile" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded mr-2">Profile</router-link>
                 <router-link to="/login" class="py-1 px-4 rounded bg-red-400 hover:bg-red-500 mx-2" @click="logout">Logout</router-link>
             </div>
     </nav>
