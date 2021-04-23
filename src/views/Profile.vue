@@ -22,6 +22,7 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import Milestone from '@/components/milestone.vue';
+import { useRouter } from 'vue-router';
 
 export default {
     name: "Home",
@@ -39,7 +40,14 @@ export default {
     methods: {
         checkUser: async function() {
                 const store = useStore();
+                const router = useRouter();
                 this.auth = computed(() => store.state.authenticated);
+                
+                // send user to login if not logged in
+                if(!computed(() => store.state.authenticated) === true) {
+                    await router.push("/")
+                }
+
                 try {
                     const response = await fetch('http://localhost:8000/api/user', {
                     method: "GET",
