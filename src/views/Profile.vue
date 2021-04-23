@@ -25,7 +25,7 @@ import Milestone from '@/components/milestone.vue';
 import { useRouter } from 'vue-router';
 
 export default {
-    name: "Home",
+    name: "Profile",
     data() {
         return {
             userinfo: null,
