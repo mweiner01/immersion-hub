@@ -17,7 +17,7 @@
 
 <script lang="ts">
 export default {
-    name: "Nav", 
+    name: "Milestone", 
     props: ["milestone"]
 }
 </script>
