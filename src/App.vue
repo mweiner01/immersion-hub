@@ -1,6 +1,6 @@
 <template>
   <Nav/>
-  <div class="max-w-6xl py-12 mx-auto text-center">
+  <div class="max-w-6xl py-12 mx-auto px-6 lg:px-16">
     <router-view/>
   </div>
 </template>

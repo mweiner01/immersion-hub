@@ -1,36 +1,37 @@
 <template>
     <div class="" v-if="auth">
-        <div v-if="userinfo">
-            <h1 class="text-2xl font-light">Welcome to your Profile, <strong>{{ userinfo.name }}</strong></h1>
+        <div v-if="userinfo" class="pt-12 text-left">
+            <h1 class="text-5xl font-semibold text-gray-700">Good Afternoon, <strong class="font-black">{{ userinfo.name }}</strong></h1>
         </div>
     </div>
     <div class="" v-if="!auth">
         <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
     </div>
-    <div class="pt-12 pb-4 text-gray-800 font-semibold text-2xl">
+    <div class="pt-12 pb-4 text-gray-800 font-semibold text-2xl text-left" v-if="!noEntries">
         <h1>Milestones</h1>
     </div>
 
-    <div class="max-w-xl mx-auto" v-if="milestones">
+    <div class="max-w-6xl mr-auto" v-if="milestones">
         <div class="" v-for="(milestone, index) in milestones" :key="milestone._id">
             <div class="bg-gray-100 py-6 rounded relative my-4">
                 <div class="px-6">
                     <div class="text-left">
-                        <div class="text-gray-700 text-xl font-black">
+                        <div class="text-gray-700 text-2xl font-black">
                             <h1>{{ milestone.title }}</h1>
                         </div>
                         <div class="absolute top-0 right-0 p-6">
-                            <button class="text-white font-semibold bg-red-400 hover:bg-red-500 rounded py-1 px-4" @click="remove(index, milestone)">Delete</button>
+                            <button class="focus:outline-none text-white font-semibold bg-yellow-400 hover:bg-yellow-500 rounded py-1 px-4 mr-2" @click="add()">Edit</button>
+                            <button class="focus:outline-none text-white font-semibold bg-red-400 hover:bg-red-500 rounded py-1 px-4" @click="remove(index, milestone)">Delete</button>
                         </div>
                         <div class="my-2 text-gray-400 font-semibold">
                             <p>Type: <span class="text-white bg-green-400 px-2 rounded">{{ milestone.type }}</span></p>
                             <p>Hours: <span class="text-white bg-green-400 px-2 rounded">{{ milestone.milestoneHours }}</span></p>
                             <p>Progress (h): <span class="text-white bg-green-400 px-2 rounded">100</span></p>
-                            <p>Progress (%): <span class="text-white bg-green-400 px-2 rounded">{{100 / milestone.milestoneHours * 100}}%</span></p>             
+                            <p>Progress (%): <span class="text-white bg-green-400 px-2 rounded">{{ calculatePercantage(milestone.milestoneHours) }}%</span></p>             
                         </div>
                     </div>
                 </div>
-                <div class="max-w-xl absolute bottom-0 w-full">
+                <div class="max-w-6xl absolute bottom-0 w-full">
                     <div class="overflow-hidden h-2 text-xs flex rounded-b bg-pink-200">
                         <div :style="`width:${100 / milestone.milestoneHours * 100}%`" class="focus:outline-none shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-400"></div>
                     </div>
@@ -38,12 +39,12 @@
             </div>
         </div>
     </div>
-    <div class="max-w-sm mx-auto p-4 rounded" v-if="noEntries">
+    <div class="max-w-5xl mr-auto p-4 bg-gray-100 text-center rounded mt-12" v-if="noEntries">
         <h1 class="text-xl font-regular text-gray-800 mb-2">Create your first Milestone</h1>
         <button class="py-1 px-2 bg-green-400 hover:bg-green-500 text-white rounded text-base focus:outline-none" @click="add()">Create Milestone</button>
     </div>
-    <div v-if="setLoading" class="max-w-sm mx-auto justify-center">
-        <div class="mx-auto loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
+    <div v-if="setLoading" class="max-w-sm mr-auto">
+        <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
     </div>
 </template>
 
@@ -151,6 +152,11 @@ export default {
             } catch(e) {
                 console.log(e)
             }
+        },
+        // Calculate percantage progress and cut to only 2 decimal after comma
+        calculatePercantage: function(hours) {
+            var percentage = 100 / hours * 100;
+            return percentage.toFixed(2)
         }
     }
 }

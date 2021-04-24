@@ -2,7 +2,7 @@
 <div class="shadow-xl py-2">
 <nav class="flex flex-wrap max-w-6xl mx-auto items-center justify-between px-6 lg:px-16">
     <div class="flex flex-shrink-0 text-gray-800">
-        <a class="py-1 px-4" href="/">
+        <a class="py-1" href="/">
             <h1>Immersion Hub</h1>
         </a>
     </div>
