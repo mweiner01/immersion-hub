@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit" class="text-gray-700 max-w-xs mx-auto">
+    <form @submit.prevent="submit" class="text-gray-700 max-w-xs mx-auto text-center">
       <div class="my-4">
         <h1 class="text-green-500 text- font-light">Log into your Account!</h1>
       </div>
