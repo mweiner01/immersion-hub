@@ -20,28 +20,49 @@
                             <h1>{{ milestone.title }}</h1>
                         </div>
                         <div class="absolute top-0 right-0 p-6">
-                            <button class="focus:outline-none text-white font-semibold bg-yellow-400 hover:bg-yellow-500 rounded py-1 px-4 mr-2" @click="add()">Edit</button>
+                            <button class="focus:outline-none text-white font-semibold bg-yellow-400 hover:bg-yellow-500 rounded py-1 px-4 mr-2">Edit</button>
                             <button class="focus:outline-none text-white font-semibold bg-red-400 hover:bg-red-500 rounded py-1 px-4" @click="remove(index, milestone)">Delete</button>
                         </div>
                         <div class="my-2 text-gray-400 font-semibold">
                             <p>Type: <span class="text-white bg-green-400 px-2 rounded">{{ milestone.type }}</span></p>
                             <p>Hours: <span class="text-white bg-green-400 px-2 rounded">{{ milestone.milestoneHours }}</span></p>
-                            <p>Progress (h): <span class="text-white bg-green-400 px-2 rounded">100</span></p>
+                            <p>Progress (h): <span class="text-white bg-green-400 px-2 rounded">0</span></p>
                             <p>Progress (%): <span class="text-white bg-green-400 px-2 rounded">{{ calculatePercantage(milestone.milestoneHours) }}%</span></p>             
                         </div>
                     </div>
                 </div>
                 <div class="max-w-6xl absolute bottom-0 w-full">
                     <div class="overflow-hidden h-2 text-xs flex rounded-b bg-pink-200">
-                        <div :style="`width:${100 / milestone.milestoneHours * 100}%`" class="focus:outline-none shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-400"></div>
+                        <div :style="`width:${0 / milestone.milestoneHours * 100}%`" class="focus:outline-none shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-400"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="max-w-5xl mr-auto p-4 bg-gray-100 text-center rounded mt-12" v-if="noEntries">
-        <h1 class="text-xl font-regular text-gray-800 mb-2">Create your first Milestone</h1>
-        <button class="py-1 px-2 bg-green-400 hover:bg-green-500 text-white rounded text-base focus:outline-none" @click="add()">Create Milestone</button>
+    <div v-if="!showFormular">
+        <div class="max-w-5xl mr-auto p-4 bg-gray-100 text-center rounded mt-12" v-if="noEntries">
+            <h1 class="text-xl font-regular text-gray-800 mb-2">Create your first Milestone</h1>
+            <button class="py-1 px-2 bg-green-400 hover:bg-green-500 text-white rounded text-base focus:outline-none" @click="showFormular = !showFormular">Create Milestone</button>
+        </div>
+    </div>
+    <div class="py-12" v-if="showFormular">
+        <form @submit.prevent="add()" class="text-gray-700 max-w-xs mx-auto">
+            <div class="my-4">
+                <h1 class="text-green-500 text-xl font-semibold text-center font-light">Create Milestone</h1>
+            </div>
+            <div class="my-2">
+                <input v-model="form.title" class="bg-gray-200 py-2 pl-2 pr-6 w-full rounded border-2 border-transparent placeholder-gray-700 focus:border-green-400 focus:outline-none" type="text" placeholder="Title" required>
+            </div>
+            <div class="my-2">
+                <input v-model="form.type" class="bg-gray-200 py-2 pl-2 pr-6 w-full rounded border-2 border-transparent placeholder-gray-700 focus:border-green-400 focus:outline-none" type="text" placeholder="Type" required>
+            </div>
+            <div class="my-2">
+                <input v-model="form.hours" class="bg-gray-200 py-2 pl-2 pr-6 w-full rounded border-2 border-transparent placeholder-gray-700 focus:border-green-400 focus:outline-none" type="text" placeholder="Hours" required>
+            </div>
+            <div class="my-2">
+                <button type="submit" class="py-2 px-12 bg-green-400 hover:bg-green-500 rounded text-white cursor-pointer w-full">Create Milestone</button>
+            </div>
+        </form>
     </div>
     <div v-if="setLoading" class="max-w-sm mr-auto">
         <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
@@ -61,7 +82,13 @@ export default {
             milestones: null,
             auth: false,
             setLoading: true,
-            noEntries: false
+            noEntries: false,
+            showFormular: false,
+            form: {
+                title: '',
+                type: '',
+                hours: 0
+            }
         }
     },
     mounted: async function() {
@@ -120,8 +147,15 @@ export default {
                     const response = await fetch('http://localhost:8000/api/milestones', {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
+                    credentials: 'include',
+                    body: JSON.stringify(this.form)
                     }).then(response => response.json()).then(data => this.milestones.push(data));
+
+                    if(this.showFormular) {
+                        this.showFormular = false
+                    } else {
+                        this.showFormular = true
+                    }
 
                     if(this.milestones.length === 0) {
                         this.noEntries = true
@@ -155,7 +189,7 @@ export default {
         },
         // Calculate percantage progress and cut to only 2 decimal after comma
         calculatePercantage: function(hours) {
-            var percentage = 100 / hours * 100;
+            var percentage = 0 / hours * 100;
             return percentage.toFixed(2)
         }
     }
