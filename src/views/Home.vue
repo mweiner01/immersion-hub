@@ -1,4 +1,5 @@
 <template>
+    <Nav></Nav>
     <div class="" v-if="auth">
         <div v-if="userinfo">
             <h1 class="text-2xl font-light">Welcome to the home page, <strong>{{ userinfo.name }}</strong> and your coins are: <strong>{{ userinfo.coins }}</strong></h1>
@@ -12,6 +13,7 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import Nav from '@/components/Nav'
 
 export default {
     name: "Home",
@@ -44,6 +46,9 @@ export default {
                     await store.dispatch(('setAuth'), false)
                 }
         }
+    },
+    components: {
+        Nav
     }
 }
 </script>

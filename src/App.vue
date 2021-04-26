@@ -1,6 +1,5 @@
 <template>
-  <Nav/>
-  <div class="max-w-6xl py-12 mx-auto px-6 lg:px-16">
+  <div>
     <router-view/>
   </div>
 </template>
@@ -10,7 +9,7 @@ import Nav from '@/components/Nav'
 
 export default {
   components: {
-    Nav
+    
   }
 }
 </script>
