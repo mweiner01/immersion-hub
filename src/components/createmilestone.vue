@@ -1,30 +1,35 @@
 <template>
-    <div v-if="showFirstForm">
-        <div class="max-w-5xl mr-auto p-4 bg-gray-100 text-center rounded mt-12" v-if="!showFormular">
-            <h1 class="text-xl font-regular text-gray-800 mb-2">Create your first Milestone</h1>
-            <button class="py-1 px-2 bg-green-400 hover:bg-green-500 text-white rounded text-base focus:outline-none" @click="showFormular = !showFormular">Create Milestone</button>
+    <div>
+        <div class="max-w-5xl bg-gray-100 mr-auto p-4 text-center mt-12" v-if="!showFormular">
+            <h1 class="text-2xl font-regular text-gray-800">Create a Milestone</h1>
+            <button class="focus:outline-none text-gray-800 font-semibold bg-transparent border-2 border-gray-800 hover:bg-gray-800 hover:text-white py-2 px-8 mt-4" @click="showFormular = !showFormular">Create your Milestone</button>
         </div>
     </div>
     
     <!-- Formular for adding new milestone -->
     <div class="max-w-5xl py-12" v-if="showFormular">
         <form @submit.prevent="add(this.form)" class="text-gray-700 max-w-2xl mx-auto">
+            <div class="my-12">
+                <h1 class="text-gray-800 text-3xl font-semibold text-center font-light">Create your Milestone</h1>
+            </div>
             <div class="my-4">
-                <h1 class="text-green-500 text-xl font-semibold text-center font-light">Create Milestone</h1>
+                <p class="my-2 text-gray-800 font-bold text-xl">Select a good title</p>
+                <input v-model="form.title" class="bg-white py-2 pl-2 pr-6 w-full border-2 border-transparent placeholder-gray-700 border-gray-800 focus:outline-none" type="text" placeholder="Title" required>
             </div>
-            <div class="my-2">
-                <input v-model="form.title" class="bg-gray-200 py-2 pl-2 pr-6 w-full rounded border-2 border-transparent placeholder-gray-700 focus:border-green-400 focus:outline-none" type="text" placeholder="Title" required>
+            <div class="my-4">
+                <p class="my-2 text-gray-800 font-bold text-xl">Select how many hours your goal should be</p>
+                <input v-model="form.hours" class="bg-white py-2 pl-2 pr-6 w-full border-2 border-transparent placeholder-gray-700 border-gray-800 focus:outline-none" type="text" placeholder="Hours" required>
             </div>
-            <div class="my-2">
-                <input v-model="form.hours" class="bg-gray-200 py-2 pl-2 pr-6 w-full rounded border-2 border-transparent placeholder-gray-700 focus:border-green-400 focus:outline-none" type="text" placeholder="Hours" required>
+            <div class="my-4">
+                <p class="my-2 text-gray-800 font-bold text-xl">Select the type of your milestone</p>
+                <select v-model="form.type" class="bg-white py-2 pl-2 pr-6 w-full border-2 border-transparent placeholder-gray-700 border-gray-800 focus:outline-none">
+                    <option class="py-1">Reading</option>
+                    <option class="py-1">Listening</option>
+                    <option class="py-1">Passive Listening</option>
+                </select>
             </div>
-            <select v-model="form.type" class="bg-gray-200 py-2 pl-2 pr-6 w-full rounded border-2 border-transparent placeholder-gray-700 focus:border-green-400 focus:outline-none">
-                <option class="py-1">Reading</option>
-                <option class="py-1">Listening</option>
-                <option class="py-1">Passive Listening</option>
-            </select>
-            <div class="my-2">
-                <button type="submit" class="py-2 px-12 bg-green-400 hover:bg-green-500 rounded text-white cursor-pointer w-full">Create Milestone</button>
+            <div class="my-6">
+                <button type="submit" class="focus:outline-none w-full text-gray-800 font-semibold bg-transparent border-2 border-gray-800 hover:bg-gray-800 hover:text-white py-1 px-8">Create Milestone</button>
             </div>
         </form>
     </div>

@@ -1,5 +1,24 @@
 <template>
-  <div class="absolute shadow z-50 top-0 left-0 bg-white h-full w-64" style="min-height: 890px;">
+    <div class="" v-if="dataReady">
+            <div class="pt-12 pb-4 text-gray-800 font-semibold text-2xl text-left">
+                <h1>Milestones</h1>
+            </div>
+            
+            <div v-if="milestones.length > 0">
+                <div v-if="milestones">
+                    <milestones :listdata="milestones" @removeMilestone="remove"></milestones>
+                </div>
+            </div>
+
+            <div v-if="setLoading" class="max-w-sm mr-auto">
+                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
+            </div>
+
+            <div v-if="noEntries">
+                <createMilestone :ldta="milestones" @addMilestone="addMilestone"></createmilestone>
+            </div>
+    </div>
+      <div class="absolute shadow z-50 top-0 left-0 bg-white h-full w-64" style="min-height: 890px;">
     <div class="pl-4 bg-white py-5 flex">
       <h1 class="uppercase text-gray-800 text-left text-xl leading-none">Dashboard</h1>
       <p class="ml-2 bg-purple-500 px-2 rounded-md text-white uppercase font-semibold">Beta</p>
@@ -113,34 +132,23 @@
             </div>
           </div>
         </div>
-        <div>
-          <div class="pt-8 border-b py-6 px-2">
-            <h1 class="text-gray-800 text-2xl font-medium">Account</h1>
-            <p class="text-gray-600 font-semibold">These settings will change your experience on this website!</p>
-          </div>
-          <div class="flex py-6 border-b px-2">
-            <div class="w-1/3">
-              <h1 class="text-gray-600 font-semibold">Language</h1>
+              <div class="pt-12 pb-4 text-gray-800 font-semibold text-2xl text-left">
+                <h1>Milestones</h1>
             </div>
-            <div  class="w-1/3">
-              <h1 class="text-black font-semibold">English</h1>
+            
+            <div v-if="milestones.length > 0">
+                <div v-if="milestones">
+                    <milestones :listdata="milestones" @removeMilestone="remove"></milestones>
+                </div>
             </div>
-            <div class="w-1/3 text-right">
-              <button class="focus:outline-none text-green-600 hover:text-green-700 font-semibold ml-auto">Update</button>
+
+            <div v-if="setLoading" class="max-w-sm mr-auto">
+                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
             </div>
-          </div>
-          <div class="flex py-6 border-b px-2">
-            <div class="w-1/3">
-              <h1 class="text-gray-600 font-semibold">Time zone</h1>
+
+            <div v-if="noEntries">
+                <createMilestone :ldta="milestones" @addMilestone="addMilestone"></createmilestone>
             </div>
-            <div  class="w-1/3">
-              <h1 class="text-black font-semibold">UTC +2</h1>
-            </div>
-            <div class="w-1/3 text-right">
-              <button class="focus:outline-none text-green-600 hover:text-green-700 font-semibold ml-auto">Update</button>
-            </div>
-          </div>
-        </div>
       </div>
   </div>
 </template>

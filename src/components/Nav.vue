@@ -23,6 +23,7 @@
             </div>
             <div class="flex flex-shrink-0 text-white" v-if="auth">
                 <router-link to="/profile" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded mr-2">Profile</router-link>
+                <router-link to="/dashboard" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded mr-2">Dashboard</router-link>
                 <router-link to="/login" class="py-1 px-4 rounded bg-red-400 hover:bg-red-500 mx-2" @click="logout">Logout</router-link>
             </div>
     </nav>
