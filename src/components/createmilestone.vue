@@ -1,14 +1,14 @@
 <template>
-    <div>
-        <div class="max-w-5xl mr-auto p-4 bg-gray-100 text-center rounded mt-12" v-if="showFormular">
+    <div v-if="showFirstForm">
+        <div class="max-w-5xl mr-auto p-4 bg-gray-100 text-center rounded mt-12" v-if="!showFormular">
             <h1 class="text-xl font-regular text-gray-800 mb-2">Create your first Milestone</h1>
-            <button class="py-1 px-2 bg-green-400 hover:bg-green-500 text-white rounded text-base focus:outline-none">Create Milestone</button>
+            <button class="py-1 px-2 bg-green-400 hover:bg-green-500 text-white rounded text-base focus:outline-none" @click="showFormular = !showFormular">Create Milestone</button>
         </div>
     </div>
     
     <!-- Formular for adding new milestone -->
     <div class="max-w-5xl py-12" v-if="showFormular">
-        <form @submit.prevent="addMilestone()" class="text-gray-700 max-w-2xl mx-auto">
+        <form @submit.prevent="add(this.form)" class="text-gray-700 max-w-2xl mx-auto">
             <div class="my-4">
                 <h1 class="text-green-500 text-xl font-semibold text-center font-light">Create Milestone</h1>
             </div>
@@ -24,7 +24,7 @@
                 <option class="py-1">Passive Listening</option>
             </select>
             <div class="my-2">
-                <button type="submit" class="py-2 px-12 bg-green-400 hover:bg-green-500 rounded text-white cursor-pointer w-full" @click="add()">Create Milestone</button>
+                <button type="submit" class="py-2 px-12 bg-green-400 hover:bg-green-500 rounded text-white cursor-pointer w-full">Create Milestone</button>
             </div>
         </form>
     </div>
@@ -32,16 +32,18 @@
 
 <script>
 export default {
+    inheritAttrs: false,
     name: "createMilestone",
     props: {
         ldata: {
             type: Array,
-            required: true
+            required: false
         }
     },
     data() {
         return {
             showFormular: false,
+            showFirstForm: true,
             mutableList: this.ldata,
             form: {
                 title: '',
@@ -51,24 +53,14 @@ export default {
         }
     },
     methods: {
-        addMilestone: async function() {
-                try {
-                    await fetch('http://localhost:8000/api/milestones', {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include',
-                    body: JSON.stringify(this.form)
-                    }).then(response => response.json()).then(data => this.mutableList.push(data));
+        add: function(form) {
+            this.$emit('addMilestone', form)
 
-                    if(this.showFormular) {
-                        this.showFormular = false
-                    } else {
-                        this.showFormular = true
-                    }
-                } catch(e) {
-                    console.log(e)
-                }
+            // set variables
+            this.showFormular = false
+            this.showFirstForm = false
         },
-    }
+    },
+    
 }
 </script>

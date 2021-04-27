@@ -1,12 +1,14 @@
 <template>
-    <Nav></Nav>
-    <div class="" v-if="auth">
-        <div v-if="userinfo">
-            <h1 class="text-2xl font-light">Welcome to the home page, <strong>{{ userinfo.name }}</strong> and your coins are: <strong>{{ userinfo.coins }}</strong></h1>
+    <div v-if="dataReady">
+        <Nav></Nav>
+        <div class="" v-if="auth">
+            <div v-if="userinfo">
+                <h1 class="text-2xl font-light">Welcome to the home page, <strong>{{ userinfo.name }}</strong> and your coins are: <strong>{{ userinfo.coins }}</strong></h1>
+            </div>
         </div>
-    </div>
-    <div class="" v-if="!auth">
-        <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
+        <div class="" v-if="!auth">
+            <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
+        </div>
     </div>
 </template>
 
@@ -20,11 +22,13 @@ export default {
     data() {
         return {
             userinfo: null,
-            auth: false
+            auth: false,
+            dataReady: false
         }
     },
-    mounted: function() {
-        this.checkUser();
+    mounted: async function() {
+        await this.checkUser();
+        this.dataReady = true
     },
     methods: {
         checkUser: async function() {

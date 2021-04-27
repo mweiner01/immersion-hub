@@ -1,29 +1,37 @@
 <template>
-    <Nav></Nav>
-    <div class="" v-if="auth">
-        <div v-if="userinfo" class="pt-12 text-left">
-            <h1 class="text-5xl font-semibold text-gray-700">Good Afternoon, <strong class="font-black">{{ userinfo.name }}</strong></h1>
+    <div class="" v-if="dataReady">
+        <Nav></Nav>
+        <div class="max-w-6xl mx-auto items-center justify-between px-6 lg:px-16">
+            <div class="" v-if="auth">
+                <div v-if="userinfo" class="pt-12 text-left">
+                    <h1 class="text-5xl font-semibold text-gray-700">Good Afternoon, <strong class="font-black">{{ userinfo.name }}</strong></h1>
+                </div>
+            </div>
+
+            <div class="" v-if="!auth">
+                <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
+            </div>
+
+            <div class="pt-12 pb-4 text-gray-800 font-semibold text-2xl text-left">
+                <h1>Milestones</h1>
+            </div>
+            
+            <div v-if="milestones.length > 0">
+                <div v-if="milestones">
+                    <milestones :listdata="milestones" @removeMilestone="remove"></milestones>
+                </div>
+            </div>
+
+            <div v-if="setLoading" class="max-w-sm mr-auto">
+                <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
+            </div>
+
+            <div v-if="noEntries">
+                <createMilestone :ldta="milestones" @addMilestone="addMilestone"></createmilestone>
+            </div>
+
         </div>
     </div>
-    <div class="" v-if="!auth">
-        <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
-    </div>
-    <div class="pt-12 pb-4 text-gray-800 font-semibold text-2xl text-left">
-        <h1>Milestones</h1>
-    </div>
-
-    <div v-if="milestones">
-        <milestones :listdata="milestones" @remove="remove"></milestones>
-    </div>
-
-    <!-- Loading Spinner -->
-    <div v-if="setLoading" class="max-w-sm mr-auto">
-        <div class="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-12 w-12"></div>
-    </div>
-
-    <createMilestone :ldta="milestones"></createmilestone>
-
-
 </template>
 
 <script>
@@ -43,11 +51,13 @@ export default {
             auth: false,
             setLoading: true,
             noEntries: false,
+            dataReady: false
         }
     },
     mounted: async function() {
         await this.checkUser();
         await this.fetchMilestones();
+        this.dataReady = true;
     },
     methods: {
         // Check user
@@ -68,7 +78,6 @@ export default {
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include'
                     }).then(response => response.json()).then(data => this.userinfo = data);
-                    
                 } catch(e) {
                     await store.dispatch(('setAuth'), false)
                 }
@@ -114,6 +123,18 @@ export default {
             } catch(e) {
                 console.log(e)
             }
+        },
+        addMilestone: async function(form) {
+                try {
+                    await fetch('http://localhost:8000/api/milestones', {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    body: JSON.stringify(form)
+                    }).then(response => response.json()).then(data => this.milestones.push(data));
+                } catch(e) {
+                    console.log(e)
+                }
         },
     },
     components: {
