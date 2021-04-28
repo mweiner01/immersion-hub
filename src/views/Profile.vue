@@ -16,7 +16,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import milestones from '@/components/milestones/milestones.vue';
-import milestonesList from '@/components/dashboard/milestones'
+import milestonesList from '@/components/dashboard/milestoneslist'
 import createMilestone from '@/components/milestones/createmilestone'
 import Nav from '@/components/Nav.vue';
 
