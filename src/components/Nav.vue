@@ -22,8 +22,11 @@
         Dashboard
       </router-link>
     </div>
-    <div>
+    <div v-if="!auth">
       <router-link to="/login" class="inline-block text-md px-6 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 font-semibold hover:bg-white mt-4 lg:mt-0">Login</router-link>
+    </div>
+    <div v-if="auth">
+      <button class="inline-block text-md px-6 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 font-semibold hover:bg-white mt-4 lg:mt-0" @click="logout()">Logout</button>
     </div>
   </div>
 </div>

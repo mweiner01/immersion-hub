@@ -40,7 +40,7 @@ export default {
     inheritAttrs: false,
     name: "createMilestone",
     props: {
-        ldata: {
+        listdata: {
             type: Array,
             required: false
         }

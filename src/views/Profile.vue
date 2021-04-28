@@ -1,25 +1,23 @@
 <template>
-            <div>
-                <div v-if="milestones">
-                    <div v-if="milestones.length > 0">
-                        <milestones :listdata="milestones" @removeMilestone="remove"></milestones>
-                    </div>
-                </div>
-            </div>
 
             <div v-if="setLoading" class="max-w-5xl pt-6 mr-auto">
                 <div class="loader ease-linear rounded-full mx-auto border-2 border-t-2 border-gray-200 h-12 w-12"></div>
             </div>
 
-            <createMilestone :ldta="milestones" @addMilestone="addMilestone"></createmilestone>
+            <createMilestone :listdata="milestones" @addMilestone="addMilestone"></createmilestone>
+
+            <div class="p-12">
+              <milestonesList :listdata="milestones"></milestonesList>
+            </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
-import milestones from '@/components/milestones.vue';
-import createMilestone from '@/components/createmilestone'
+import milestones from '@/components/milestones/milestones.vue';
+import milestonesList from '@/components/dashboard/milestones'
+import createMilestone from '@/components/milestones/createmilestone'
 import Nav from '@/components/Nav.vue';
 
 export default {
@@ -118,8 +116,7 @@ export default {
         },
     },
     components: {
-        milestones,
-        createMilestone,
+        milestonesList
     }
 }
 </script>

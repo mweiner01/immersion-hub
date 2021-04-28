@@ -4,10 +4,14 @@
         <div class="bg-gray-200">
             <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 text-gray-800">
                 <div class="text-center py-32">
-                    <h1 class="text-7xl font-black">Welcome to Immersion Hub</h1>
-                    <p class="text-3xl font-light">This web application will help you keep track of your language learning</p>
-                    <div class="mt-8">
-                        <router-link to="/register" class="bg-gray-700 hover:bg-gray-800 w-1/3 text-white rounded text-xl py-2 px-12 focus:outline-none">Create your free account</router-link>
+                    <div class="">
+                        <h1 class="text-7xl font-black">Welcome to Immersion Hub</h1>
+                    </div>
+                    <div class="my-1">
+                        <p class="text-3xl font-light">This web application will help you keep track of your language learning</p>
+                    </div>
+                    <div class="mt-16">
+                        <router-link to="/register" class="bg-gray-700 hover:bg-gray-800 w-1/2 text-white rounded text-xl py-4 px-24 focus:outline-none">Create your free account</router-link>
                     </div>
                 </div>
             </div>
