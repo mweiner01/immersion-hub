@@ -1,33 +1,34 @@
 <template>
-<div class="shadow-xl py-2">
-<nav class="flex flex-wrap max-w-6xl mx-auto items-center justify-between px-6 lg:px-16">
-    <div class="flex flex-shrink-0 text-gray-800">
-        <a class="py-1" href="/">
-            <h1>Immersion Hub</h1>
-        </a>
+<!-- This example requires Tailwind CSS v2.0+ -->
+<nav class="bg-gray-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap bg-gray-800 p-4">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <span class="font-semibold text-xl tracking-tight">Immersion Hub</span>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-md text-gray-600 font-semibold lg:flex-grow">
+      <router-link to="Home" href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 hover:bg-gray-700 hover:text-white py-1 px-4 rounded mr-4">
+        Home
+      </router-link>
+      <router-link to="/blog" href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 hover:bg-gray-700 hover:text-white py-1 px-4 rounded mr-4">
+        Blog
+      </router-link>
+      <router-link to="/dashboard" class="block mt-4 lg:inline-block lg:mt-0 hover:bg-gray-700 hover:text-white py-1 px-4 rounded">
+        Dashboard
+      </router-link>
     </div>
-    <!-- Menu Button (Mobile) -->
-    <div class="hidden">
-        <button class="flex items-center px-4 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-        <p>Menu</p>
-        </button>
+    <div>
+      <router-link to="/login" class="inline-block text-md px-6 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 font-semibold hover:bg-white mt-4 lg:mt-0">Login</router-link>
     </div>
-    <div class="inline-block lg:block ml-auto mr-2">
-        <ul class="flex flex-row float-right">
-            <router-link to="/" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded">Home</router-link>
-        </ul>
-        </div>
-            <div class="flex flex-shrink-0 text-white" v-if="!auth">
-                <router-link to="/login" class="py-1 px-4 rounded bg-green-400 hover:bg-green-500 mx-2">Login</router-link>
-                <router-link to="register" class="py-1 px-4 rounded bg-green-400 hover:bg-green-500 mx-2">Register</router-link>
-            </div>
-            <div class="flex flex-shrink-0 text-white" v-if="auth">
-                <router-link to="/profile" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded mr-2">Profile</router-link>
-                <router-link to="/dashboard" class="text-gray-800 hover:text-gray-900 hover:bg-gray-200 py-1 px-4 rounded mr-2">Dashboard</router-link>
-                <router-link to="/login" class="py-1 px-4 rounded bg-red-400 hover:bg-red-500 mx-2" @click="logout">Logout</router-link>
-            </div>
-    </nav>
+  </div>
 </div>
+</nav>
+
 </template>
 
 <script lang="ts">
@@ -35,7 +36,12 @@ import { computed } from 'vue';
 import { useStore } from 'vuex'
 import { onMounted } from 'vue';
 export default {
-    name: "Nav", 
+    name: "Nav",
+    data() {
+        return {
+            usermenu: false
+        }
+    },
     setup() {
         const store = useStore();
         const auth = computed(() => store.state.authenticated);

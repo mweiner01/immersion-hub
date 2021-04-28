@@ -1,13 +1,16 @@
 <template>
     <div v-if="dataReady">
         <Nav></Nav>
-        <div class="" v-if="auth">
-            <div v-if="userinfo">
-                <h1 class="text-2xl font-light">Welcome to the home page, <strong>{{ userinfo.name }}</strong> and your coins are: <strong>{{ userinfo.coins }}</strong></h1>
+        <div class="bg-gray-200">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 text-gray-800">
+                <div class="text-center py-32">
+                    <h1 class="text-7xl font-black">Welcome to Immersion Hub</h1>
+                    <p class="text-3xl font-light">This web application will help you keep track of your language learning</p>
+                    <div class="mt-8">
+                        <router-link to="/register" class="bg-gray-700 hover:bg-gray-800 w-1/3 text-white rounded text-xl py-2 px-12 focus:outline-none">Create your free account</router-link>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="" v-if="!auth">
-            <h1 class="text-2xl font-light">I am sorry, you are not logged in.</h1>
         </div>
     </div>
 </template>

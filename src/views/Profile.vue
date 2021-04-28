@@ -1,69 +1,4 @@
 <template>
-  <div class="absolute shadow z-50 top-0 left-0 bg-white h-full w-64" style="min-height: 890px;">
-    <div class="pl-4 bg-white py-5 flex">
-      <h1 class="uppercase text-gray-800 text-left text-xl leading-none">Dashboard</h1>
-      <p class="ml-2 bg-purple-500 px-2 rounded-md text-white uppercase font-semibold">Beta</p>
-    </div>
-    <div class="text-white px-2">
-      <div class="mb-3 text-green-700 font-bold uppercase text-sm pt-4 pl-2 flex">
-        <h1>General</h1>
-      </div>
-      <div class="text-sm font-semibold text-black bg-green-200 bg-opacity-50 hover:text-green-800 rounded pl-2 pr-12 py-2 mb-2">
-        <a href="/dashboard/users/<%= mysqlUser.username %>/manage/profile" class="px-2">Settings</a>
-      </div>
-    </div>
-    <div class="text-white px-2">
-      <div class="mb-3 text-green-700 font-bold uppercase text-sm pt-4 pl-2 flex">
-        <h1>Insights</h1>
-      </div>
-      <div class="text-sm font-semibold text-black hover:bg-green-200 hover:bg-opacity-50 hover:text-green-800 rounded pl-2 pr-12 py-2 mb-2">
-        <router-link to="/profile" class="px-2">Profile</router-link>
-      </div>
-      <div class="text-sm font-semibold text-black hover:bg-green-200 hover:bg-opacity-50 hover:text-green-800 rounded pl-2 pr-12 py-2 mb-2">
-        <router-link to="/dashboard/timers" class="px-2">Timers</router-link>
-      </div>
-      <div class="text-sm font-semibold text-black hover:bg-green-200 hover:bg-opacity-50 hover:text-green-800 rounded pl-2 pr-12 py-2 mb-2">
-        <router-link to="/dashboard/milestones" class="px-2">Milestones</router-link>
-      </div>
-    </div>
-    <div class="text-white">
-      <div class="my-3 text-md font-semibold tracking-tight pl-16 py-1 pt-12">
-        <a href="/logout" class="bg-red-400 py-1 px-4 hover:bg-red-500 rounded">Ausloggen</a>
-      </div>
-    </div>
-  </div>
-    <div class="pl-64 absolute top-0 left-0 w-full z-0" style="min-width: 1610px">
-      <div class="w-full bg-white shadow flex">
-        <div class="ml-auto flex flex-wrap inline-block pr-32 mt-2">
-          <div class="pl-4 pb-1">
-            <img src="https://minotar.net/helm/makkuinJapan/100" class="h-10 w-10 rounded-full shadow-xl" alt="">
-          </div>
-          <div class="ml-2 text-sm mt-2 leading-none">
-            <h1 class="text-gray-600 font-semibold"></h1>
-            <h1 class="text-gray-500">Max</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  <div class="pl-64 pt-16 w-full h-screen" style="min-width: 1610px;">
-    <div class="pt-4 max-w-5xl mx-auto">
-        <div class="pl-2 text-left">
-          <h1 class="text-gray-800 text-4xl font-extrabold">Milestones</h1>
-        </div>
-          <div class="pt-4 flex border-b text-gray-600 font-semibold">
-            <div class="mr-4 px-2 py-4 border-b-2 text-green-600 border-green-600">
-              <a href="">All</a>
-            </div>
-            <div class="mx-4 px-2 py-4 border-b-2 border-transparent hover:text-green-600 hover:border-green-600">
-              <a href="">Reading</a>
-            </div>
-            <div class="mx-4 px-2 py-4 border-b-2 border-transparent hover:text-green-600 hover:border-green-600">
-              <a href="">Listening</a>
-            </div>
-            <div class="mx-4 px-2 py-4 border-b-2 border-transparent hover:text-green-600 hover:border-green-600">
-              <a href="">Passive Listening</a>
-            </div>
-          </div>
             <div>
                 <div v-if="milestones">
                     <div v-if="milestones.length > 0">
@@ -77,8 +12,6 @@
             </div>
 
             <createMilestone :ldta="milestones" @addMilestone="addMilestone"></createmilestone>
-    </div>
-  </div>
 </template>
 
 <script>
