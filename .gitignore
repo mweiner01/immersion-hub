@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+src/public/css/style.css
+src/public/css/tailwind.css
+package-lock.json*
 
 # local env files
 .env.local
