@@ -1,5 +1,5 @@
 <template>
-            <div class="max-w-sm bg-white dark:bg-gray-800 rounded p-8">
+            <div class="max-w-sm h-full bg-white dark:bg-gray-800 rounded p-8">
                 <div>
                     <h1 class="text-gray-800 dark:text-white text-lg font-bold">My Milestones</h1>
                 </div>
@@ -7,7 +7,7 @@
                     <p class="text-gray-300 dark:text-gray-200 font-semibold">{{ this.count }} Milestones</p>
                 </div>
                     <div class="my-1" v-for="(milestone) in listdata" :key="milestone._id">
-                        <div class="max-w-sm mx-auto bg-white dark:bg-gray-800 rounded-xl sm:py-4 sm:flex sm:items-center text-sm">
+                        <div class="max-w-sm h-auto mx-auto bg-white dark:bg-gray-800 rounded-xl sm:py-4 sm:flex sm:items-center text-sm">
                             <div class="inline-block" v-if="milestone.type == 'Reading'">
                                 <span class="text-4xl w-12 h-auto rounded dark:text-white text-gray-800"><i class="lni lni-book"></i></span>
                             </div>
@@ -22,8 +22,8 @@
                                 <p class="text-gray-300 dark:text-gray-200 font-semibold">{{ milestone.type }}, {{ milestone.milestoneHours }}h</p>
                             </div>
 
-                            <div class="ml-auto">
-                                <button class="ml-auto text-gray-400 font-semibold py-1 px-2 rounded bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-900 focus:outline-none">Details</button>
+                            <div class="pl-4 ml-auto">
+                                <button class="ml-auto text-gray-400 font-semibold py-1 px-2 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-900 focus:outline-none">Details</button>
                             </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@ export default {
     methods: {
         setDarkMode: function() {
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
         document.documentElement.classList.add('dark')
         } else {
         document.documentElement.classList.remove('dark')
