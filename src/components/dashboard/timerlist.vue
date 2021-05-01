@@ -1,5 +1,5 @@
 <template>
-            <div class="max-w-sm h-full bg-white dark:bg-gray-800 rounded p-8 relative">
+            <div class="h-full bg-white dark:bg-gray-800 rounded p-8 relative">
                 <div>
                     <h1 class="text-gray-800 dark:text-white text-lg font-bold">My Timers</h1>
                 </div>
@@ -7,7 +7,7 @@
                     <p class="text-gray-300 dark:text-gray-200 font-semibold">{{ this.count }} Timers</p>
                 </div>
                     <div class="my-1" v-for="(timer) in listdata" :key="timer._id">
-                        <div class="max-w-sm h-auto mx-auto bg-white dark:bg-gray-800 rounded-xl sm:py-4 sm:flex sm:items-center text-sm">
+                        <div class="h-auto mx-auto bg-white dark:bg-gray-800 rounded-xl sm:py-4 sm:flex sm:items-center text-sm">
                             <div class="inline-block" v-if="timer.type == 'Reading'">
                                 <span class="text-4xl w-12 h-auto rounded dark:text-white text-gray-800"><i class="lni lni-book"></i></span>
                             </div>

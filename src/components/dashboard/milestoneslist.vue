@@ -1,5 +1,5 @@
 <template>
-            <div class="max-w-sm h-full bg-white dark:bg-gray-800 rounded p-8">
+            <div class="h-full bg-white dark:bg-gray-800 rounded p-8">
                 <div>
                     <h1 class="text-gray-800 dark:text-white text-lg font-bold">My Milestones</h1>
                 </div>
@@ -7,7 +7,7 @@
                     <p class="text-gray-300 dark:text-gray-200 font-semibold">{{ this.count }} Milestones</p>
                 </div>
                     <div class="my-1" v-for="(milestone) in listdata" :key="milestone._id">
-                        <div class="max-w-sm h-auto mx-auto bg-white dark:bg-gray-800 rounded-xl sm:py-4 sm:flex sm:items-center text-sm">
+                        <div class="h-auto mx-auto bg-white dark:bg-gray-800 rounded-xl sm:py-4 sm:flex sm:items-center text-sm">
                             <div class="inline-block" v-if="milestone.type == 'Reading'">
                                 <span class="text-4xl w-12 h-auto rounded dark:text-white text-gray-800"><i class="lni lni-book"></i></span>
                             </div>
@@ -18,7 +18,7 @@
                                 <span class="text-4xl w-12 h-auto rounded dark:text-white text-gray-800"><i class="lni lni-headphone"></i></span>
                             </div>
                             <div class="ml-4">
-                                <p class="text-gray-800 dark:text-white font-semibold" v-bind:title="milestone.title">{{ milestone.title.length > 25 ? milestone.title.substring(0, 25) + '...' : milestone.title }}</p>
+                                <p class="text-gray-800 dark:text-white font-semibold" v-bind:title="milestone.title">{{ milestone.title.length > 100 ? milestone.title.substring(0, 100) + '...' : milestone.title }}</p>
                                 <p class="text-gray-300 dark:text-gray-200 font-semibold">{{ milestone.type }}, {{ milestone.milestoneHours }}h</p>
                             </div>
 

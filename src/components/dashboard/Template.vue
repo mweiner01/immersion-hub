@@ -27,7 +27,7 @@
                         <div>
                             <a class="block px-4 py-2 mt-2 text-md font-semibold text-gray-900 bg-gray-200 rounded-lg dark-mode:bg-gray-700 dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#"><i class="lni lni-archive"></i> Overview</a>
                             <a class="block px-4 py-2 mt-2 text-md font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#"><i class="lni lni-direction"></i> Milestones</a>
-                            <router-link to="/dashboard/timers" class="block px-4 py-2 mt-2 text-md font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#"><i class="lni lni-timer"></i> Timers</router-link>
+                            <a class="block px-4 py-2 mt-2 text-md font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#"><i class="lni lni-timer"></i> Timers</a>
                             <a class="block px-4 py-2 mt-2 text-md font-semibold text-gray-900 bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#"><i class="lni lni-emoji-friendly"></i> Friends</a>
                         </div>
                     </div>
@@ -61,24 +61,7 @@
                 </nav>
                 <div class="px-8 pt-4">
                     <h1 class="font-bold text-gray-800 text-2xl">Dashboard</h1>
-                    <p class="mt-1 text-sm font-semibold text-gray-500">Views / <span class="text-gray-800">Overview</span></p>
-                </div>
-                <div class="mt-12 max-w-7xl mx-auto grid grid-cols-3 gap-4">
-                    <div class="">
-                        <timestats type="Active Listening"></timestats>
-                    </div>
-                    <div class="">
-                        <timestats type="Reading"></timestats>
-                    </div>
-                    <div class="">
-                        <timestats type="Passive Listening"></timestats>
-                    </div>
-                    <div class="col-span-2 row-span-1">
-                        <milestonesList :listdata="milestones"></milestonesList>
-                    </div>
-                    <div class="col-span-1">
-                        <dashboardTimerlist :listdata="timers"></dashboardTimerlist>
-                    </div>
+                    <p class="mt-1 text-sm font-semibold text-gray-500">Views / <span class="text-gray-800">{{ this.sitename }}</span></p>
                 </div>
             </div>
         </div>
@@ -88,27 +71,24 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
-import milestonesList from '@/components/dashboard/milestoneslist'
-import dashboardTimerlist from '@/components/dashboard/timerlist'
-import timestats from '@/components/dashboard/timestats'
 
 export default {
-    name: "Profile",
+    name: "dashboardTemplate",
     data() {
         return {
             userinfo: null,
-            milestones: null,
-            timers: null,
             auth: false,
-            setLoading: true,
-            noEntries: false,
             dataReady: false
+        }
+    },
+    props: {
+        sitename: {
+            type: String,
+            required: true
         }
     },
     mounted: async function() {
         await this.checkUser();
-        await this.fetchMilestones();
-        await this.fetchTimers();
         this.dataReady = true;
     },
     methods: {
@@ -134,82 +114,7 @@ export default {
                     await store.dispatch(('setAuth'), false)
                 }
         },
-        // Fetch all milestones
-        fetchMilestones: async function() {
-            try {
-                await fetch('http://localhost:8000/api/milestones/'+this.userinfo.name, {
-                    method: "GET",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
-                }).then(response => response.json()).then(data => this.milestones = data);
-                // set loading false (no spinner anymore)
-                this.setLoading = false
-
-                 // if there are no entries set noEntries to true
-                if(this.milestones.length === 0) {
-                    this.noEntries = true
-                } else {
-                    this.noEntries = false
-                }
-
-            } catch(e) {
-                console.log(e)
-            }
-        },
-        fetchTimers: async function() {
-            try {
-                await fetch('http://localhost:8000/api/timers/'+this.userinfo.name, {
-                    method: "GET",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
-                }).then(response => response.json()).then(data => this.timers = data);
-                // set loading false (no spinner anymore)
-                this.setLoading = false
-
-                 // if there are no entries set noEntries to true
-
-            } catch(e) {
-                console.log(e)
-            }
-        },
-        // Remove the milestone from database and also from the current array
-        remove: async function(index, milestone) {
-            try {
-                await fetch('http://localhost:8000/api/milestones/delete/'+milestone._id, {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
-                    }).then(this.milestones.splice(index, 1))
-                    
-                    // set noEntries to true, after you deleted one and there are no entries anymore
-                    if(this.milestones.length === 0) {
-                        this.noEntries = true
-                    } else {
-                        this.noEntries = false
-                    }
-
-            } catch(e) {
-                console.log(e)
-            }
-        },
-        addMilestone: async function(form) {
-                try {
-                    await fetch('http://localhost:8000/api/milestones', {
-                    method: "POST",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include',
-                    body: JSON.stringify(form)
-                    }).then(response => response.json()).then(data => this.milestones.push(data));
-                } catch(e) {
-                    console.log(e)
-                }
-        },
     },
-    components: {
-        milestonesList,
-        dashboardTimerlist,
-        timestats
-    }
 }
 </script>
 <style>

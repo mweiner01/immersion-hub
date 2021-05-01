@@ -4,7 +4,7 @@ import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Profile from '@/views/Profile.vue'
 import Dashboard from '@/views/Dashboard.vue'
-import component from '@/views/Home.vue'
+import Timers from '@/views/Timers.vue'
 
 const routes: Array<RouteRecordRaw> = [
   { 
@@ -21,6 +21,9 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/dashboard', component: Dashboard
+  },
+  {
+    path: '/dashboard/timers', component: Timers
   }
 ]
 
