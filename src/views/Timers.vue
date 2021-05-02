@@ -53,7 +53,7 @@
                     <p class="mt-1 text-sm font-semibold text-gray-500">Views / <span class="text-gray-800">Timers</span></p>
                 </div>
                 <div v-if="this.timers && this.timerHistory">
-                    <div class="mt-12 max-w-7xl mx-auto grid grid-cols-3 grid-flow-rows gap-4">
+                    <div class="mt-12 max-w-7xl mx-auto grid 2xl:grid-cols-3 xl:grid-cols-2 grid-cols-1 grid-flow-rows gap-4 px-4">
                         <div class="col-span-1" v-for="timer in this.timers" v-bind:key="timer._id">
                             <dashboardtimers :listdata="timer" :totaltime="totaltimes" @stopTimer="stopTimer" @startTimer="startTimer"></dashboardtimers>
                         </div>
@@ -135,7 +135,13 @@ export default {
                 }).then(response => response.json()).then(data => this.timerHistory = data);
                 this.timers.forEach(timer => {
                     if(this.timerHistory) {
-                        timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
+                        var dayToday = new Date(Date.now())
+                        var dateString = new Date(timer.startDate)
+                        var dayInHistory = new Date(dateString)
+
+                        if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
+                            timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
+                        }
                     }
                 });
 
@@ -150,7 +156,6 @@ export default {
                         if(timerlist) {
                             timerlist.forEach(timer => {
                                     if(timer.startDate) {
-                                        console.log(Date.now() - timer.startDate)
                                         timer.time = new Date((Date.now() - timer.startDate) / 1000 * 1000).toISOString().substr(11, 8)
                                     }
                                 });

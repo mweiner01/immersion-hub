@@ -17,6 +17,10 @@
                             <div v-if="timer.type == 'Passive Listening'">
                                 <span class="text-4xl w-12 h-auto rounded dark:text-white text-gray-800"><i class="lni lni-headphone"></i></span>
                             </div>
+                            <div v-if="timer.type == 'Anki'">
+                                <span class="text-4xl w-12 h-auto rounded dark:text-white text-gray-800"><i class="lni lni-graduation"></i></span>
+
+                            </div>
                             <div class="ml-4">
                                 <p class="text-gray-800 hover:text-blue-400 cursor-pointer dark:text-white font-semibold" v-bind:title="timer.title">{{ timer.title.length > 25 ? milestone.title.substring(0, 25) + '...' : timer.title }}</p>
                                 <p class="text-gray-300 dark:text-gray-200 font-semibold">{{ timer.type }}</p>
@@ -26,9 +30,6 @@
                                 <span class="text-base bg-gray-900 text-white py-1 px-4 rounded">00:00:00</span>
                             </div>
                     </div>
-                </div>
-                <div class="absolute bottom-0 py-8">
-                    <h1 class="text-blue-400 bg-transparent hover:bg-gray-200 py-1 px-4 rounded hover:text-gray-800 cursor-pointer">View more</h1>
                 </div>
             </div>
 </template>
