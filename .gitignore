@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-/dist
+# /dist
 
 src/public/css/style.css
 src/public/css/tailwind.css
