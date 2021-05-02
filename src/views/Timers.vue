@@ -57,6 +57,11 @@
                         <div class="col-span-1" v-for="timer in this.timers" v-bind:key="timer._id">
                             <dashboardtimers :listdata="timer" :totaltime="totaltimes" @stopTimer="stopTimer" @startTimer="startTimer"></dashboardtimers>
                         </div>
+                        <div class="group border-green-500 hover:bg-white border-2 border-dashed p-4 w-full h-auto mx-auto flex rounded-md hover:shadow-lg hover:border-transparent cursor-pointer">
+                            <div class="m-auto text-center">
+                                <h1 class="text-2xl text-green-500 font-semibold"><i class="lni lni-plus"></i></h1>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,7 +83,8 @@ export default {
             totaltimes: null,
             auth: false,
             timerHistory: [],
-            dataReady: false
+            dataReady: false,
+            showTextCreateNewTimer: false
         }
     },
     mounted: async function() {
