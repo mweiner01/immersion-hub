@@ -63,10 +63,10 @@
                     <h1 class="font-bold text-gray-800 text-2xl">Dashboard</h1>
                     <p class="mt-1 text-sm font-semibold text-gray-500">Views / <span class="text-gray-800">Timers</span></p>
                 </div>
-                <div v-if="this.timers">
+                <div v-if="this.timers && this.timerHistory">
                     <div class="mt-12 max-w-7xl mx-auto grid grid-cols-3 grid-flow-rows gap-4">
                         <div class="col-span-1" v-for="timer in this.timers" v-bind:key="timer._id">
-                            <dashboardtimers :listdata="timer" @stopTimer="stopTimer" @startTimer="startTimer"></dashboardtimers>
+                            <dashboardtimers :listdata="timer" :totaltime="totaltimes" @stopTimer="stopTimer" @startTimer="startTimer"></dashboardtimers>
                         </div>
                     </div>
                 </div>
@@ -86,14 +86,16 @@ export default {
         return {
             userinfo: null,
             timers: null,
+            totaltimes: null,
             auth: false,
-            timerHistory: null,
+            timerHistory: [],
             dataReady: false
         }
     },
     mounted: async function() {
         await this.checkUser();
         await this.fetchTimers();
+        await this.fetchHistory();
         await this.startInterval(this.timers)
         this.dataReady = true;
     },
@@ -142,7 +144,11 @@ export default {
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include'
                 }).then(response => response.json()).then(data => this.timerHistory = data);
-                
+                this.timers.forEach(timer => {
+                    if(this.timerHistory) {
+                        timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
+                    }
+                });
 
             } catch(e) {
                 console.log(e)
@@ -155,7 +161,8 @@ export default {
                         if(timerlist) {
                             timerlist.forEach(timer => {
                                     if(timer.startDate) {
-                                        timer.time = new Date((new Date(Date.now() - new Date(timer.startDate))) / 1000 * 1000).toISOString().substr(11, 8)
+                                        console.log(Date.now() - timer.startDate)
+                                        timer.time = new Date((Date.now() - timer.startDate) / 1000 * 1000).toISOString().substr(11, 8)
                                     }
                                 });
                         }
@@ -163,18 +170,38 @@ export default {
         },
 
         startTimer: async function(timer) {
+            if(timer.startDate == null) {
             var obj = this.timers.findIndex(obj => obj._id == timer._id)
-            this.timers[obj].startDate = new Date(Date.now())
+            this.timers[obj].startDate = Date.now()
 
+            var data = {
+                "startDate": Date.now()
+            }
+
+                try {
+                    await fetch('http://localhost:8000/api/timers/changedate/'+timer.title, {
+                        method: "POST",
+                        headers: {'Content-Type': 'application/json'},
+                        credentials: 'include',
+                        body: JSON.stringify(data)
+                    }).then(response => response.json()).then(data => console.log("Successfully started"));
+
+
+                } catch(e) {
+                    console.log(e)
+                }
+                if(this.timerHistory) {
+                    this.timers[obj].elapsedTime = new Date((this.sum(this.timerHistory, this.timers[obj]) / 1000) * 1000).toISOString().substr(11, 8)
+                }
+            }
         },
         stopTimer: async function(timer) {
-            if(timer.startedTime != null) {
-                var obj = this.timers.findIndex(obj => obj._id == timer._id)
-                this.timers[obj].startDate = null
+            if(timer.startDate != null) {
                 
                 var data = {
                     "title": timer.title,
-                    "startdate": timer.startDate
+                    "startDate": timer.startDate,
+                    "elapsedTime": (Date.now() - timer.startDate)
                 }
 
                 try {
@@ -183,14 +210,47 @@ export default {
                         headers: {'Content-Type': 'application/json'},
                         credentials: 'include',
                         body: JSON.stringify(data)
-                    }).then(response => response.json()).then(data => this.timerHistory = data);
-                    
+                    }).then(response => response.json()).then(data => this.timerHistory.push(data));
+
+                    var obj = this.timers.findIndex(obj => obj._id == timer._id)
+                    this.timers[obj].startDate = null
+                    this.timers[obj].time = '00:00:00'
+                    if(this.timerHistory) {
+                        this.timers[obj].elapsedTime = new Date((this.sum(this.timerHistory, this.timers[obj]) / 1000) * 1000).toISOString().substr(11, 8)
+                    }
+
+
+                } catch(e) {
+                    console.log(e)
+                }
+                try {
+                    await fetch('http://localhost:8000/api/timers/setdate/null/'+timer.title, {
+                        method: "POST",
+                        headers: {'Content-Type': 'application/json'},
+                        credentials: 'include'
+                    }).then(response => response.json()).then(data => console.log("Set Date null"));
+
 
                 } catch(e) {
                     console.log(e)
                 }
             }
         },
+        sum: function(obj, obj2) {
+                if(obj) {
+                    var list = [];
+                    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+                    for (let [key, value] of Object.entries(obj)) {
+                        if(obj[key].timerTitle === obj2.title) {
+                            var jsonString = JSON.stringify(value)
+                            var jsonObj = JSON.parse(jsonString)
+                            list.push(parseInt(jsonObj['elapsedTime']))
+                        }
+                    }
+                    return list.reduce(reducer);
+                }
+        }
         
     },
     components: {

@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="pl-4 ml-auto">
-                                <span class="text-base bg-gray-900 text-white py-1 px-4 rounded">{{ formatNum(timer.hours) }}:{{ formatNum(timer.minutes) }}:{{ formatNum(timer.seconds) }}</span>
+                                <span class="text-base bg-gray-900 text-white py-1 px-4 rounded">00:00:00</span>
                             </div>
                     </div>
                 </div>
