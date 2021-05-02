@@ -16,21 +16,29 @@
                 </div>
                 <div class="my-2 bg-gray-100 text-gray-800 p-2">
                     <h3 class="text-xl font-bold">Total Time Today</h3>
-                    <h1 class="text-lg font-semibold">12:02:21</h1>
+                    <h1 class="text-lg font-semibold">{{ listdata.elapsedTime }}</h1>
                 </div>
             </div>
 </template>
 
 <script>
+
+
 export default {
     inheritAttrs: false,
     name: "dashboardTimers",
     data() {
         return {
+            todaysTime: 0
         }
     },
     props: {
         listdata: {
+            type: Array,
+            required: true
+        },
+        totaltime: {
+            type: String,
             required: true
         }
     },
@@ -44,7 +52,7 @@ export default {
         },
         stopTimer: function(timer) {
             this.$emit('stopTimer', timer)
-        }
+        },
     }
 }
 </script>

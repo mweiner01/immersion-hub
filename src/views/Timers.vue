@@ -166,7 +166,7 @@ export default {
                                     }
                                 });
                         }
-                }, 1000);
+                }, 20);
         },
 
         startTimer: async function(timer) {
@@ -175,11 +175,12 @@ export default {
             this.timers[obj].startDate = Date.now()
 
             var data = {
+                "title": timer.title,
                 "startDate": Date.now()
             }
 
                 try {
-                    await fetch('http://localhost:8000/api/timers/changedate/'+timer.title, {
+                    await fetch('http://localhost:8000/api/timers/changedate/'+this.userinfo.name, {
                         method: "POST",
                         headers: {'Content-Type': 'application/json'},
                         credentials: 'include',
@@ -224,11 +225,12 @@ export default {
                     console.log(e)
                 }
                 try {
-                    await fetch('http://localhost:8000/api/timers/setdate/null/'+timer.title, {
+                    await fetch('http://localhost:8000/api/timers/setdate/null/'+this.userinfo.name, {
                         method: "POST",
                         headers: {'Content-Type': 'application/json'},
-                        credentials: 'include'
-                    }).then(response => response.json()).then(data => console.log("Set Date null"));
+                        credentials: 'include',
+                        body: JSON.stringify({"title": timer.title})
+                    }).then(response => response.json()).then(data => console.log(data));
 
 
                 } catch(e) {
@@ -245,10 +247,10 @@ export default {
                         if(obj[key].timerTitle === obj2.title) {
                             var jsonString = JSON.stringify(value)
                             var jsonObj = JSON.parse(jsonString)
-                            list.push(parseInt(jsonObj['elapsedTime']))
+                            list.push(Math.round(parseInt(jsonObj['elapsedTime'])))
                         }
                     }
-                    return list.reduce(reducer);
+                    return Math.round(list.reduce(reducer));
                 }
         }
         
