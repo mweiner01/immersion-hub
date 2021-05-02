@@ -138,7 +138,6 @@ export default {
                         var dayToday = new Date(Date.now())
                         var dateString = new Date(timer.startDate)
                         var dayInHistory = new Date(dateString)
-
                         if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
                             timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
                         }
@@ -244,7 +243,7 @@ export default {
                             list.push(Math.round(parseInt(jsonObj['elapsedTime'])))
                         }
                     }
-                    return Math.round(list.reduce(reducer));
+                    return Math.round(list.reduce(reducer, 0));
                 }
         }
         
