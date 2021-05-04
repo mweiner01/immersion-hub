@@ -92,6 +92,7 @@ export default {
         await this.fetchTimers();
         await this.fetchHistory();
         await this.startInterval(this.timers)
+        
         this.dataReady = true;
     },
     methods: {
