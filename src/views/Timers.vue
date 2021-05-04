@@ -92,7 +92,7 @@ export default {
         await this.fetchTimers();
         await this.fetchHistory();
         await this.startInterval(this.timers)
-        
+
         this.dataReady = true;
     },
     methods: {
@@ -141,10 +141,15 @@ export default {
                     credentials: 'include'
                 }).then(response => response.json()).then(data => this.timerHistory = data);
                 this.timers.forEach(timer => {
+                    // NEED A FIX FOR SURE! ONLY GETTING 1 HISTORY FOR EACH???
                     if(this.timerHistory) {
+
                         var dayToday = new Date(Date.now())
                         var dateString = new Date(timer.startDate)
                         var dayInHistory = new Date(dateString)
+                        
+                        console.log("History: " + (dayInHistory.getDate() + 1))
+                        console.log("Today: " + dayToday.getDate())
                         if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
                             timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
                         }
@@ -191,9 +196,19 @@ export default {
                 } catch(e) {
                     console.log(e)
                 }
-                if(this.timerHistory) {
-                    this.timers[obj].elapsedTime = new Date((this.sum(this.timerHistory, this.timers[obj]) / 1000) * 1000).toISOString().substr(11, 8)
-                }
+                this.timers.forEach(timer => {
+                    if(this.timerHistory) {
+
+                        var dayToday = new Date(Date.now())
+                        var dateString = new Date(timer.startDate)
+                        var dayInHistory = new Date(dateString)
+                        
+
+                        if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
+                            timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
+                        }
+                    }
+                });
             }
         },
         stopTimer: async function(timer) {
@@ -216,9 +231,19 @@ export default {
                     var obj = this.timers.findIndex(obj => obj._id == timer._id)
                     this.timers[obj].startDate = null
                     this.timers[obj].time = '00:00:00'
-                    if(this.timerHistory) {
-                        this.timers[obj].elapsedTime = new Date((this.sum(this.timerHistory, this.timers[obj]) / 1000) * 1000).toISOString().substr(11, 8)
-                    }
+                    this.timers.forEach(timer => {
+                        if(this.timerHistory) {
+
+                            var dayToday = new Date(Date.now())
+                            var dateString = new Date(timer.startDate)
+                            var dayInHistory = new Date(dateString)
+                            
+
+                            if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
+                                timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
+                            }
+                        }
+                    });
 
 
                 } catch(e) {
