@@ -40,7 +40,6 @@ export default {
     name: "dashboardTimerlist",
     data() {
         return {
-            count: 6
         }
     },
     props: {
@@ -50,29 +49,12 @@ export default {
         }
     },
     mounted() {
-        this.setDarkMode()
+        this.fetchHistory()
     },
     methods: {
-        setDarkMode: function() {
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-        document.documentElement.classList.add('dark')
-        } else {
-        document.documentElement.classList.remove('dark')
-        }
-
-        // Whenever the user explicitly chooses light mode
-        localStorage.theme = 'light'
-
-        // Whenever the user explicitly chooses dark mode
-        localStorage.theme = 'dark'
-
-        // Whenever the user explicitly chooses to respect the OS preference
-        localStorage.removeItem('theme')
-        },
         formatNum: function(num) {
             return num < 10 ? '0' + num : num
-        }
+        },
     }
 }
 </script>
