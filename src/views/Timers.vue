@@ -52,18 +52,7 @@
                     <h1 class="font-bold text-gray-800 text-2xl">Dashboard</h1>
                     <p class="mt-1 text-sm font-semibold text-gray-500">Views / <span class="text-gray-800">Timers</span></p>
                 </div>
-                <div v-if="this.timers && this.timerHistory">
-                    <div class="mt-12 max-w-7xl mx-auto grid 2xl:grid-cols-3 xl:grid-cols-2 grid-cols-1 grid-flow-rows gap-4 px-4">
-                        <div class="col-span-1" v-for="timer in this.timers" v-bind:key="timer._id">
-                            <dashboardtimers :listdata="timer" :totaltime="totaltimes" @stopTimer="stopTimer" @startTimer="startTimer"></dashboardtimers>
-                        </div>
-                        <div class="group border-green-500 hover:bg-white border-2 border-dashed p-4 w-full h-auto mx-auto flex rounded-md hover:shadow-lg hover:border-transparent cursor-pointer">
-                            <div class="m-auto text-center">
-                                <h1 class="text-2xl text-green-500 font-semibold"><i class="lni lni-plus"></i></h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <timerlist></timerlist>
             </div>
         </div>
 </template>
@@ -72,216 +61,19 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
-import dashboardtimers from '@/components/dashboard/timers'
+import timerlist from '@/components/dashboard/timers/timerlist'
 
 export default {
     name: "Profile",
     data() {
         return {
-            userinfo: null,
-            timers: null,
-            totaltimes: null,
-            auth: false,
-            timerHistory: [],
-            dataReady: false,
-            showTextCreateNewTimer: false
-        }
-    },
-    mounted: async function() {
-        await this.checkUser();
-        await this.fetchTimers();
-        await this.fetchHistory();
-        await this.startInterval(this.timers)
 
-        this.dataReady = true;
+        }
     },
     methods: {
-        // Check user
-        checkUser: async function() {
-                const store = useStore();
-                const router = useRouter();
-
-                if(computed(() => store.state.authenticated)) {
-                    this.auth = computed(() => store.state.authenticated);
-                } else {
-                    await router.push('/')
-                }
-                
-
-                try {
-                    const response = await fetch('http://localhost:8000/api/user', {
-                    method: "GET",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
-                    }).then(response => response.json()).then(data => this.userinfo = data);
-                } catch(e) {
-                    await store.dispatch(('setAuth'), false)
-                }
-        },
-        fetchTimers: async function() {
-            try {
-                await fetch('http://localhost:8000/api/timers/'+this.userinfo.name, {
-                    method: "GET",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
-                }).then(response => response.json()).then(data => this.timers = data);
-                // set loading false (no spinner anymore)
-                this.setLoading = false
-
-
-            } catch(e) {
-                console.log(e)
-            }
-        },
-        fetchHistory: async function() {
-            try {
-                await fetch('http://localhost:8000/api/timers/history/'+this.userinfo.name, {
-                    method: "GET",
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: 'include'
-                }).then(response => response.json()).then(data => this.timerHistory = data);
-                this.timers.forEach(timer => {
-                    // NEED A FIX FOR SURE! ONLY GETTING 1 HISTORY FOR EACH???
-                    if(this.timerHistory) {
-
-                        var dayToday = new Date(Date.now())
-                        var dateString = new Date(timer.startDate)
-                        var dayInHistory = new Date(dateString)
-                        
-                        console.log("History: " + (dayInHistory.getDate() + 1))
-                        console.log("Today: " + dayToday.getDate())
-                        if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
-                            timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
-                        }
-                    }
-                });
-
-            } catch(e) {
-                console.log(e)
-            }
-        },
-        
-        
-        startInterval: async function(timerlist) {
-                    setInterval(async function() {
-                        if(timerlist) {
-                            timerlist.forEach(timer => {
-                                    if(timer.startDate) {
-                                        timer.time = new Date((Date.now() - timer.startDate) / 1000 * 1000).toISOString().substr(11, 8)
-                                    }
-                                });
-                        }
-                }, 20);
-        },
-
-        startTimer: async function(timer) {
-            if(timer.startDate == null) {
-            var obj = this.timers.findIndex(obj => obj._id == timer._id)
-            this.timers[obj].startDate = Date.now()
-
-            var data = {
-                "title": timer.title,
-                "startDate": Date.now()
-            }
-
-                try {
-                    await fetch('http://localhost:8000/api/timers/changedate/'+this.userinfo.name, {
-                        method: "POST",
-                        headers: {'Content-Type': 'application/json'},
-                        credentials: 'include',
-                        body: JSON.stringify(data)
-                    }).then(response => response.json()).then(data => console.log("Successfully started"));
-
-
-                } catch(e) {
-                    console.log(e)
-                }
-                this.timers.forEach(timer => {
-                    if(this.timerHistory) {
-
-                        var dayToday = new Date(Date.now())
-                        var dateString = new Date(timer.startDate)
-                        var dayInHistory = new Date(dateString)
-                        
-
-                        if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
-                            timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
-                        }
-                    }
-                });
-            }
-        },
-        stopTimer: async function(timer) {
-            if(timer.startDate != null) {
-                
-                var data = {
-                    "title": timer.title,
-                    "startDate": timer.startDate,
-                    "elapsedTime": (Date.now() - timer.startDate)
-                }
-
-                try {
-                    await fetch('http://localhost:8000/api/timers/addhistory', {
-                        method: "POST",
-                        headers: {'Content-Type': 'application/json'},
-                        credentials: 'include',
-                        body: JSON.stringify(data)
-                    }).then(response => response.json()).then(data => this.timerHistory.push(data));
-
-                    var obj = this.timers.findIndex(obj => obj._id == timer._id)
-                    this.timers[obj].startDate = null
-                    this.timers[obj].time = '00:00:00'
-                    this.timers.forEach(timer => {
-                        if(this.timerHistory) {
-
-                            var dayToday = new Date(Date.now())
-                            var dateString = new Date(timer.startDate)
-                            var dayInHistory = new Date(dateString)
-                            
-
-                            if((dayInHistory.getUTCDate() + 1) === dayToday.getUTCDate()) {
-                                timer.elapsedTime = new Date((this.sum(this.timerHistory, timer) / 1000) * 1000).toISOString().substr(11, 8)
-                            }
-                        }
-                    });
-
-
-                } catch(e) {
-                    console.log(e)
-                }
-                try {
-                    await fetch('http://localhost:8000/api/timers/setdate/null/'+this.userinfo.name, {
-                        method: "POST",
-                        headers: {'Content-Type': 'application/json'},
-                        credentials: 'include',
-                        body: JSON.stringify({"title": timer.title})
-                    }).then(response => response.json()).then(data => console.log(data));
-
-
-                } catch(e) {
-                    console.log(e)
-                }
-            }
-        },
-        sum: function(obj, obj2) {
-                if(obj) {
-                    var list = [];
-                    const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
-                    for (let [key, value] of Object.entries(obj)) {
-                        if(obj[key].timerTitle === obj2.title) {
-                            var jsonString = JSON.stringify(value)
-                            var jsonObj = JSON.parse(jsonString)
-                            list.push(Math.round(parseInt(jsonObj['elapsedTime'])))
-                        }
-                    }
-                    return Math.round(list.reduce(reducer, 0));
-                }
-        }
-        
     },
     components: {
-        dashboardtimers
+        timerlist
     }
 }
 </script>
