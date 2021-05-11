@@ -48,9 +48,6 @@ export default {
             required: true
         }
     },
-    mounted() {
-        this.fetchHistory()
-    },
     methods: {
         formatNum: function(num) {
             return num < 10 ? '0' + num : num
