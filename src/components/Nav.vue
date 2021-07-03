@@ -3,7 +3,7 @@
 <nav class="bg-gray-800">
     <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap bg-gray-800 p-4">
   <div class="flex items-center flex-shrink-0 text-white mr-6">
-    <span class="font-semibold text-xl tracking-tight">Immersion Hub</span>
+    <router-link to="/" class="font-semibold text-xl tracking-tight">Immersion Hub</router-link>
   </div>
   <div class="block lg:hidden">
     <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
@@ -18,7 +18,7 @@
       <router-link to="/blog" href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 hover:bg-gray-700 hover:text-white py-1 px-4 rounded mr-4">
         Blog
       </router-link>
-      <router-link to="/dashboard" class="block mt-4 lg:inline-block lg:mt-0 hover:bg-gray-700 hover:text-white py-1 px-4 rounded">
+      <router-link to="/profile" class="block mt-4 lg:inline-block lg:mt-0 hover:bg-gray-700 hover:text-white py-1 px-4 rounded">
         Dashboard
       </router-link>
     </div>

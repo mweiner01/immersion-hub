@@ -160,6 +160,6 @@ export default {
         return {
             
         }
-    }
+    },
 }
 </script>
